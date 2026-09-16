@@ -1,0 +1,28 @@
+mysql> SELECT * FROM customer ORDER BY cname DESC;
++---------+----------+
+| cname   | lcity    |
++---------+----------+
+| Sunil   | Delhi    |
+| Shivani | Bombay   |
+| Pramod  | Nagpur   |
+| Naren   | Bombay   |
+| Mehul   | Baroda   |
+| Madhuri | Nagpur   |
+| Anil    | Calcutta |
++---------+----------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT * FROM branch ORDER BY bcity ASC;
++------------+----------+
+| bname      | bcity    |
++------------+----------+
+| MG ROAD    | Banglore |
+| ANDHERI    | Bombay   |
+| KAROL BAGH | Delhi    |
+| CHANDINI   | Delhi    |
+| VRC        | Nagpur   |
+| JNE        | Nagpur   |
++------------+----------+
+6 rows in set (0.00 sec)
+
+mysql> notee;

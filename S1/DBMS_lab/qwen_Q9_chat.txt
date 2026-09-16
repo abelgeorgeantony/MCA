@@ -1,0 +1,134 @@
+# GROUP BY & HAVING — Learning Guide + Solutions
+
+## 📘 Quick Learning Guide
+
+### Core Concepts
+
+**`GROUP BY`** partitions rows into groups sharing a common value. Aggregate functions (`SUM`, `COUNT`, `AVG`, `MIN`, `MAX`) then operate **per group**.
+
+**`HAVING`** filters **groups** (like `WHERE` filters rows). Use it when the filter condition involves an aggregate.
+
+### Execution Order (important!)
+```
+FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY
+```
+Because `HAVING` runs after `GROUP BY`, it can reference aliases and aggregates. `WHERE` cannot.
+
+### Syntax Skeleton
+```sql
+SELECT col, AGG(col)
+FROM table
+[WHERE condition]          -- filters rows BEFORE grouping
+GROUP BY col               -- creates groups
+[HAVING AGG(col) op value] -- filters groups AFTER grouping
+[ORDER BY ...];
+```
+
+### Common Pitfalls
+| Mistake | Fix |
+|---|---|
+| Using aggregate in `WHERE` | Move it to `HAVING` |
+| SELECTing a non-grouped, non-aggregated column | Add it to `GROUP BY` |
+| Confusing `WHERE` vs `HAVING` | `WHERE` = row filter, `HAVING` = group filter |
+| Forgetting `JOIN` when columns come from multiple tables | Always join first, then group |
+
+---
+
+## ✅ Solutions
+
+### 1. Branch name and branch-wise deposit
+```sql
+SELECT bname, SUM(amt) AS total_deposit
+FROM deposit
+GROUP BY bname;
+```
+
+### 2. Living-city-wise name and corresponding deposit amount
+```sql
+SELECT c.lcity, SUM(d.amt) AS total_deposit
+FROM customer c
+JOIN deposit d ON c.cname = d.cname
+GROUP BY c.lcity;
+```
+
+### 3. Branch-wise deposit of customers after 1-1-2015
+```sql
+SELECT bname, SUM(amt) AS total_deposit
+FROM deposit
+WHERE ddate > '2015-01-01'
+GROUP BY bname;
+```
+
+### 4. Branch-wise deposit of customers living in Delhi
+```sql
+SELECT d.bname, SUM(d.amt) AS total_deposit
+FROM deposit d
+JOIN customer c ON d.cname = c.cname
+WHERE c.lcity = 'Delhi'
+GROUP BY d.bname;
+```
+
+### 5. Branches where number of depositors is more than 1
+```sql
+SELECT bname, COUNT(*) AS depositor_count
+FROM deposit
+GROUP BY bname
+HAVING COUNT(*) > 1;
+```
+
+### 6. Customer name and minimum deposited amount in 'Andheri' branch
+```sql
+SELECT cname, MIN(amt) AS min_deposit
+FROM deposit
+WHERE bname = 'Andheri'
+GROUP BY cname;
+```
+*(If you want the single minimum across the branch, drop `GROUP BY cname` and just `SELECT MIN(amt)`.)*
+
+### 7. City having the same number of customers as Nagpur
+```sql
+SELECT lcity
+FROM customer
+GROUP BY lcity
+HAVING COUNT(*) = (
+    SELECT COUNT(*)
+    FROM customer
+    WHERE lcity = 'Nagpur'
+);
+```
+
+### 8. Branches having sum of deposits > 30000
+```sql
+SELECT bname, SUM(amt) AS total_deposit
+FROM deposit
+GROUP BY bname
+HAVING SUM(amt) > 30000;
+```
+
+### 9. Branches with sum of deposit > 4000 and located in Delhi
+```sql
+SELECT d.bname, SUM(d.amt) AS total_deposit
+FROM deposit d
+JOIN branch b ON d.bname = b.bname
+WHERE b.bcity = 'Delhi'
+GROUP BY d.bname
+HAVING SUM(d.amt) > 4000;
+```
+
+### 10. Deposited amount along with no. of depositors living in Nagpur
+```sql
+SELECT SUM(amt) AS total_deposit, COUNT(*) AS depositor_count
+FROM deposit d
+JOIN customer c ON d.cname = c.cname
+WHERE c.lcity = 'Nagpur';
+```
+*(If you want it **per branch** for Nagpur residents, add `GROUP BY d.bname`.)*
+
+---
+
+## 🔑 Key Takeaways
+
+1. **`WHERE` before `GROUP BY`**, **`HAVING` after** — this decides performance and correctness.
+2. Every non-aggregated column in `SELECT` must appear in `GROUP BY` (strict SQL mode).
+3. For cross-table grouping (e.g., city-wise deposits), **join first, then group**.
+4. Subqueries inside `HAVING` are powerful for comparisons like "same count as X".

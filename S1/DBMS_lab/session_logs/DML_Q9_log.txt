@@ -1,0 +1,65 @@
+mysql> SELECT bname, SUM(amt) AS total_deposit
+    -> FROM deposit
+    -> 
+    -> ;
+ERROR 1140 (42000): In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'abel_lab_db.deposit.bname'; this is incompatible with sql_mode=only_full_group_by
+mysql> SELECT bname, SUM(amt) FROM deposit GROUP BY bname;
++-----------+----------+
+| bname     | SUM(amt) |
++-----------+----------+
+| VRC       | 20000.00 |
+| JNE       | 57500.00 |
+| KarolBagh | 40250.00 |
+| MG Road   | 37950.00 |
+| Andheri   | 63250.00 |
++-----------+----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT c.lcity, SUM(d.amt) FROM customer c JOIN deposit d ON c.cname = d.cname GROUP BY c.lcity;
++----------+------------+
+| lcity    | SUM(d.amt) |
++----------+------------+
+| Calcutta |   20000.00 |
+| Delhi    |   57500.00 |
+| Baroda   |   40250.00 |
+| Nagpur   |   37950.00 |
+| Bombay   |   37950.00 |
++----------+------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT bname, SUM(amt) FROM deposit WHERE ddate > '2015-01-01' GROUP BY bname;
++---------+----------+
+| bname   | SUM(amt) |
++---------+----------+
+| JNE     | 57500.00 |
+| MG Road | 37950.00 |
+| Andheri | 25300.00 |
++---------+----------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT d.bname, SUM(d.amt) FROM deposit d JOIN customer c ON d.cname = c.cname WHERE c.lcity = 'Delhi' GROUP BY d.bname;
++-------+------------+
+| bname | SUM(d.amt) |
++-------+------------+
+| JNE   |   57500.00 |
++-------+------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT bname, COUNT(*) FROM deposit GROUP BY bname HAVING COUNT(*) > 1;
++---------+----------+
+| bname   | COUNT(*) |
++---------+----------+
+| Andheri |        2 |
++---------+----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT cname, MIN(amt) FROM deposit WHERE bname = 'Andheri' GROUP BY cname;
++---------+----------+
+| cname   | MIN(amt) |
++---------+----------+
+| Sandeep | 25300.00 |
+| Naren   | 37950.00 |
++---------+----------+
+2 rows in set (0.00 sec)
+
+mysql> notee;
