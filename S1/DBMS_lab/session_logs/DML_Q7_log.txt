@@ -1,0 +1,59 @@
+mysql> SELECT SUM(amt) FROM deposit;
++-----------+
+| SUM(amt)  |
++-----------+
+| 218950.00 |
++-----------+
+1 row in set (0.00 sec)
+
+
+mysql> SELECT SUM(amt) FROM deposit WHERE ddate > "2015-01-27";
++----------+
+| SUM(amt) |
++----------+
+| 63250.00 |
++----------+
+1 row in set (0.01 sec)
+
+mysql> SELECT SUM(amt) FROM deposit  WHERE cname IN (SELECT cname FROM customer WHERE lcity = 'Nagpur');
++----------+
+| SUM(amt) |
++----------+
+| 37950.00 |
++----------+
+1 row in set (0.00 sec)
+
+
+mysql> SELECT MAX(amt) FROM deposit  WHERE cname IN (SELECT cname FROM customer WHERE lcity = 'Delhi');
++----------+
+| MAX(amt) |
++----------+
+| 57500.00 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT MIN(amt) FROM borrow WHERE bname = "ajne";
++----------+
+| MIN(amt) |
++----------+
+|  5000.00 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT COUNT(bcity) FROM branch;
++--------------+
+| COUNT(bcity) |
++--------------+
+|            6 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT COUNT(cname) FROM customer;
++--------------+
+| COUNT(cname) |
++--------------+
+|            7 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> notee;
