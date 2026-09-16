@@ -1,0 +1,169 @@
+mysql> CREATE TABLE employee(emp_id INT PRIMARY KEY,
+    -> name VARCHAR(20),
+    -> designation VARCHAR(50),
+    -> department VARCHAR(50));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DESC employee;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| emp_id      | int         | NO   | PRI | NULL    |       |
+| name        | varchar(20) | YES  |     | NULL    |       |
+| designation | varchar(50) | YES  |     | NULL    |       |
+| department  | varchar(50) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> ALTER TABLE employee DROP PRIMARY KEY;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC employee;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| emp_id      | int         | NO   |     | NULL    |       |
+| name        | varchar(20) | YES  |     | NULL    |       |
+| designation | varchar(50) | YES  |     | NULL    |       |
+| department  | varchar(50) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> ALTER TABLE employee ADD CONSTRAINT pk_emp PRIMARY KEY(emp_id);
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC employee;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| emp_id      | int         | NO   | PRI | NULL    |       |
+| name        | varchar(20) | YES  |     | NULL    |       |
+| designation | varchar(50) | YES  |     | NULL    |       |
+| department  | varchar(50) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> CREATE TABLE department(dept_id INT, dname VARCHAR(50), manager VARCHAR(40) UNIQUE);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> SHOW tables;
++-----------------------+
+| Tables_in_abel_lab_db |
++-----------------------+
+| department            |
+| employee              |
++-----------------------+
+2 rows in set (0.00 sec)
+
+mysql> DESC department;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| dept_id | int         | YES  |     | NULL    |       |
+| dname   | varchar(50) | YES  |     | NULL    |       |
+| manager | varchar(40) | YES  | UNI | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> ALTER TABLE department DROP CONSTRAINT UNIQUE;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'UNIQUE' at line 1
+mysql> ALTER TABLE department DROP UNIQUE;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'UNIQUE' at line 1
+mysql> ALTER TABLE department DROP CONSTRAINT manager UNIQUE;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'UNIQUE' at line 1
+mysql> ALTER TABLE department MODIFY COLUMN manager VARCHAR(40);
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC department;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| dept_id | int         | YES  |     | NULL    |       |
+| dname   | varchar(50) | YES  |     | NULL    |       |
+| manager | varchar(40) | YES  | UNI | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> ALTER TABLE department DROP INDEX manager;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC department;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| dept_id | int         | YES  |     | NULL    |       |
+| dname   | varchar(50) | YES  |     | NULL    |       |
+| manager | varchar(40) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> ALTER TABLE department ADD CONSTRAINT uk_mngr UNIQUE(manager);
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC department;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| dept_id | int         | YES  |     | NULL    |       |
+| dname   | varchar(50) | YES  |     | NULL    |       |
+| manager | varchar(40) | YES  | UNI | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> ALTER TABLE department DROP CONSTRAINT uk_mngr;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC department;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| dept_id | int         | YES  |     | NULL    |       |
+| dname   | varchar(50) | YES  |     | NULL    |       |
+| manager | varchar(40) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> CREATE TABLE payment(custid INT NOT NULL, name VARCHAR(30), salary DECIMAL(10,2));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DESC department;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| dept_id | int         | YES  |     | NULL    |       |
+| dname   | varchar(50) | YES  |     | NULL    |       |
+| manager | varchar(40) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> DESC payment;
++--------+---------------+------+-----+---------+-------+
+| Field  | Type          | Null | Key | Default | Extra |
++--------+---------------+------+-----+---------+-------+
+| custid | int           | NO   |     | NULL    |       |
+| name   | varchar(30)   | YES  |     | NULL    |       |
+| salary | decimal(10,2) | YES  |     | NULL    |       |
++--------+---------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> ALTER TABLE payment MODIFY COLUMN custid INT;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC payment;
++--------+---------------+------+-----+---------+-------+
+| Field  | Type          | Null | Key | Default | Extra |
++--------+---------------+------+-----+---------+-------+
+| custid | int           | YES  |     | NULL    |       |
+| name   | varchar(30)   | YES  |     | NULL    |       |
+| salary | decimal(10,2) | YES  |     | NULL    |       |
++--------+---------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> notee;

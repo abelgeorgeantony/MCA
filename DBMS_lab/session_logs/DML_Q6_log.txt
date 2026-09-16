@@ -1,0 +1,139 @@
+mysql> SELECT bname FROM branch WHERE bcity = "Delhi";
++------------+
+| bname      |
++------------+
+| KAROL BAGH |
+| CHANDINI   |
++------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT cname FROM deposit WHERE amt < 30000;
++---------+
+| cname   |
++---------+
+| Anil    |
+| Sandeep |
++---------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM deposit;
++-------+---------+-------------+----------+------------+
+| accno | cname   | bname       | amt      | ddate      |
++-------+---------+-------------+----------+------------+
+|  1001 | Anil    | VRC_ANDHERI | 20000.00 | 2014-03-01 |
+|  1002 | Sunil   | AJNE        | 57500.00 | 2015-01-04 |
+|  1003 | Mehul   | KarolBagh   | 40250.00 | 2014-11-17 |
+|  1006 | Pramod  | MG Road     | 37950.00 | 2015-03-27 |
+|  1007 | Sandeep | Andheri     | 25300.00 | 2015-03-31 |
+|  1008 | Naren   | Andheri     | 37950.00 | 2014-02-12 |
++-------+---------+-------------+----------+------------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT ddate FROM deposit WHERE cname = "Mehul";
++------------+
+| ddate      |
++------------+
+| 2014-11-17 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT cname FROM borrow WHERE loan_no = 206";
+    "> ;
+    "> "
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '";
+;
+"' at line 1
+mysql> SELECT cname FROM borrow WHERE loan_no = 206;
++-------+
+| cname |
++-------+
+| Mehul |
++-------+
+1 row in set (0.00 sec)
+
+mysql> SELECT cname FROM deposit WHERE ddate > "2015-1-1";
++---------+
+| cname   |
++---------+
+| Sunil   |
+| Pramod  |
+| Sandeep |
++---------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT accno, amt FROM deposit WHERE ddate BETWEEN "2015-1-1" AND "2015-12-1";
++-------+----------+
+| accno | amt      |
++-------+----------+
+|  1002 | 57500.00 |
+|  1006 | 37950.00 |
+|  1007 | 25300.00 |
++-------+----------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT cname FROM borrow;
++---------+
+| cname   |
++---------+
+| Anil    |
+| Mehul   |
+| Sunil   |
+| Madhuri |
++---------+
+4 rows in set (0.00 sec)
+
+
+
+
+
+
+
+mysql> notee;
+mysql> SELECT deposit.cname
+    -> FROM deposit, customer, branch
+    -> WHERE deposit.cname = customer.cname
+    ->   AND deposit.bname = branch.bname
+    ->   AND customer.lcity = 'Delhi'
+    ->   AND branch.bcity = 'Nagpur';
+Empty set (0.00 sec)
+
+mysql> SELECT d.cname 
+    -> FROM deposit d
+    -> INNER JOIN customer c ON d.cname = c.cname
+    -> INNER JOIN branch b ON d.bname = b.bname
+    -> WHERE c.lcity = 'Delhi' 
+    ->   AND b.bcity = 'Nagpur';
+Empty set (0.00 sec)
+
+mysql> UPDATE deposit SET bname = 'JNE' WHERE bname = 'AJNE';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE deposit SET bname = 'VRC' WHERE bname = 'VRC_ANDHERI';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT deposit.cname
+    -> FROM deposit, customer, branch
+    -> WHERE deposit.cname = customer.cname
+    ->   AND deposit.bname = branch.bname
+    ->   AND customer.lcity = 'Delhi'
+    ->   AND branch.bcity = 'Nagpur';
++-------+
+| cname |
++-------+
+| Sunil |
++-------+
+1 row in set (0.00 sec)
+
+mysql> notee;
+mysql> SELECT * FROM customer WHERE cname = "sunil";
++-------+-------+
+| cname | lcity |
++-------+-------+
+| Sunil | Delhi |
++-------+-------+
+1 row in set (0.00 sec)
+
+mysql> notee;

@@ -1,0 +1,25 @@
+mysql> SELECT SUM(amt) FROM deposit;
++-----------+
+| SUM(amt)  |
++-----------+
+| 218950.00 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT SUM(amt) FROM borrow;
++----------+
+| SUM(amt) |
++----------+
+| 11000.00 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT SUM(amt) FROM borrow WHERE bname = "ANDHERI";
++----------+
+| SUM(amt) |
++----------+
+|  3000.00 |
++----------+
+1 row in set (0.01 sec)
+
+mysql> notee;
