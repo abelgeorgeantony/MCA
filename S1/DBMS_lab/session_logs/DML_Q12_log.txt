@@ -1,0 +1,15 @@
+mysql> CREATE VIEW vdeposit1 AS SELECT accno, cname, bname FROM deposit;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE VIEW vdeposit2 AS SELECT deposit.cname, deposit.amt, customer.lcity FROM deposit JOIN customer ON customer.cname = deposit.cname;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE VIEW vborrow1 AS SELECT * FROM borrow WHERE loan_no = 206;
+Query OK, 0 rows affected (0.01 sec)
+mysql> select * from vborrow1;
+Empty set (0.00 sec)
+
+mysql> drop view vborrow1;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> notee;
