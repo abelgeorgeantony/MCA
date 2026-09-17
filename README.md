@@ -13,4 +13,4 @@ The repository is structured into directories for each semester, containing the 
 
 ## Command to enter the proot in each terminal tab
 
-> lab
+> alpine-proot
