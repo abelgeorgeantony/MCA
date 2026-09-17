@@ -3,17 +3,17 @@
 # MCA lab dev environment bootstrap.
 # Run on every login:  wget -qO- https://raw.githubusercontent.com/abelgeorgeantony/MCA/main/setup_env.sh | bash
 #
-# This script only PROVISIONS. To enter the environment, run: lab
+# This script only PROVISIONS. To enter the environment, run: alpine-proot
 
 set -euo pipefail
 
 # ─────────── your settings ───────────
-CMD_NAME="lab"                          # the command you'll type to enter the env
+CMD_NAME="alpine-proot"                          # the command you'll type to enter the env
 GIT_NAME="Abel George Antony"
 GIT_EMAIL="abelgeorgeantony@gmail.com"   # <- put your real one here
 GIT_EDITOR="vim"
 ALPINE_BRANCH="v3.23"
-PKGS="bash build-base gdb git curl neovim nano python3 py3-pip openssh-client ca-certificates less tmux tree"
+PKGS="bash gdb git curl neovim nano openssh-client ca-certificates less tmux tree"
 # ─────────────────────────────────────
 
 DEV_DIR="$HOME/.local_env"
@@ -154,7 +154,7 @@ GITCONFIG
 
 cat > "$ROOTFS_DIR/root/.bashrc" <<'GUESTRC'
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-export PS1='\[\033[01;32m\]lab\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+export PS1='\[\033[01;32m\]alpine-env\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 alias ll='ls -lah'
 GUESTRC
 
@@ -166,4 +166,4 @@ echo ""
 echo "Environment ready."
 say "Enter it with:  $BIN_DIR/$CMD_NAME"
 say "New terminal tabs can just run:  $CMD_NAME"
-say "Your lab home is mounted at /workspace inside."
+say "Your alpine-proot home is mounted at /workspace inside."
