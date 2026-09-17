@@ -1,0 +1,39 @@
+mysql> INSERT INTO deposit VALUES (107, 'Sandeep', 'AJNE', 2000.00, '2011-03-12');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT cname FROM deposit WHERE bname = (SELECT bname FROM deposit WHERE cname = 'Sandeep');
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> ^C
+mysql> SELECT cname FROM deposit WHERE bname IN (SELECT bname FROM deposit WHERE cname = 'Sandeep');
++---------+
+| cname   |
++---------+
+| Sandeep |
+| Sandeep |
+| Naren   |
++---------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT COUNT(DISTINCT cname) AS common_customers 
+    -> FROM deposit 
+    -> WHERE cname IN (SELECT cname FROM borrow);
++------------------+
+| common_customers |
++------------------+
+|                3 |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT COUNT(DISTINCT cname) FROM deposit WHERE cname IN (SELECT cname FROM borrow);
++-----------------------+
+| COUNT(DISTINCT cname) |
++-----------------------+
+|                     3 |
++-----------------------+
+1 row in set (0.01 sec)
+
+mysql> DELETE FROM borrow 
+    -> WHERE cname IN (SELECT cname FROM deposit);
+Query OK, 3 rows affected (0.00 sec)
+
+mysql> notee;

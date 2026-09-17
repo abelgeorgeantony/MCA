@@ -1,0 +1,74 @@
+mysql> SELECT CURTIME(), CURDATE();
++-----------+------------+
+| CURTIME() | CURDATE()  |
++-----------+------------+
+| 10:05:56  | 2026-09-17 |
++-----------+------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT YEAR(CURDATE());
++-----------------+
+| YEAR(CURDATE()) |
++-----------------+
+|            2026 |
++-----------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT MONTH(CURDATE()), MONTHNAME(CURDATE());
++------------------+----------------------+
+| MONTH(CURDATE()) | MONTHNAME(CURDATE()) |
++------------------+----------------------+
+|                9 | September            |
++------------------+----------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DAYOFYEAR(CURDATE()), DAYOFMONTH(CURDATE()), DAYOFWEEK(CURDATE());
++----------------------+-----------------------+----------------------+
+| DAYOFYEAR(CURDATE()) | DAYOFMONTH(CURDATE()) | DAYOFWEEK(CURDATE()) |
++----------------------+-----------------------+----------------------+
+|                  260 |                    17 |                    5 |
++----------------------+-----------------------+----------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT HOUR(CURTIME()), MINUTE(CURTIME()), SECOND(CURTIME());
++-----------------+-------------------+-------------------+
+| HOUR(CURTIME()) | MINUTE(CURTIME()) | SECOND(CURTIME()) |
++-----------------+-------------------+-------------------+
+|              10 |                 7 |                27 |
++-----------------+-------------------+-------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT TO_DAYS(CURDATE());
++--------------------+
+| TO_DAYS(CURDATE()) |
++--------------------+
+|             740241 |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT FROM_DAYS(TO_DAYS(CURDATE()));
++-------------------------------+
+| FROM_DAYS(TO_DAYS(CURDATE())) |
++-------------------------------+
+| 2026-09-17                    |
++-------------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DATE_ADD(CURDATE(), INTERVAL 1 DAY) AS added_date, 
+    -> DATE_SUB(CURDATE(), INTERVAL 1 DAY) AS subtracted_date;
++------------+-----------------+
+| added_date | subtracted_date |
++------------+-----------------+
+| 2026-09-18 | 2026-09-16      |
++------------+-----------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DATE_ADD(CURDATE(), INTERVAL 1 DAY),  DATE_SUB(CURDATE(), INTERVAL 1 DAY);
++-------------------------------------+-------------------------------------+
+| DATE_ADD(CURDATE(), INTERVAL 1 DAY) | DATE_SUB(CURDATE(), INTERVAL 1 DAY) |
++-------------------------------------+-------------------------------------+
+| 2026-09-18                          | 2026-09-16                          |
++-------------------------------------+-------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> notee;

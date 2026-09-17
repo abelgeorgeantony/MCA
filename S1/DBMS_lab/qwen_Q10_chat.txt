@@ -1,0 +1,159 @@
+Here are the SQL queries and solutions for the problems based on the provided database schema. 
+
+### **10. FUNCTIONS**
+
+#### **A. Numeric Functions**
+**1. Abs(-5)**
+```sql
+SELECT ABS(-5);
+```
+
+**6. Truncate(1.83579,3)**
+```sql
+SELECT TRUNCATE(1.83579, 3);
+```
+
+**7. Mod(31,3)**
+```sql
+SELECT MOD(31, 3);
+```
+
+**10. Round(5)**
+```sql
+SELECT ROUND(5);
+```
+
+#### **B. STRING FUNCTIONS**
+**1. Display the customer names in deposit table in lower case**
+```sql
+SELECT LOWER(cname) FROM deposit;
+```
+
+**2. Display customer names in deposit table in uppercase**
+```sql
+SELECT UPPER(cname) FROM deposit;
+```
+
+**3. Display the customer name and length of each name.**
+```sql
+SELECT cname, LENGTH(cname) AS name_length FROM deposit;
+```
+
+**4. Find the length of a string in bits.**
+```sql
+SELECT BIT_LENGTH('example_string'); 
+-- Or applied to the table:
+SELECT cname, BIT_LENGTH(cname) AS bit_length FROM deposit LIMIT 1;
+```
+
+**7. Concatenate customer name and branch name from the table deposit**
+```sql
+SELECT CONCAT(cname, ' - ', bname) AS customer_branch FROM deposit;
+```
+
+#### **C. Date Functions**
+*(Note: These can be executed using the current system date/time or applied to the `ddate` column in the `deposit` table. Below are the standard executions using current date/time).*
+
+**1. curtime(), curdate()**
+```sql
+SELECT CURTIME(), CURDATE();
+```
+
+**2. year()**
+```sql
+SELECT YEAR(CURDATE()); 
+-- Or applied to table: SELECT YEAR(ddate) FROM deposit;
+```
+
+**3. month(), monthname()**
+```sql
+SELECT MONTH(CURDATE()), MONTHNAME(CURDATE());
+```
+
+**4. dayofyear(), dayofmonth(), dayofweek()**
+```sql
+SELECT DAYOFYEAR(CURDATE()), DAYOFMONTH(CURDATE()), DAYOFWEEK(CURDATE());
+```
+
+**5. hour(), minute(), second()**
+```sql
+SELECT HOUR(CURTIME()), MINUTE(CURTIME()), SECOND(CURTIME());
+```
+
+**6. to_days()**
+```sql
+SELECT TO_DAYS(CURDATE());
+```
+
+**7. from_days()**
+```sql
+SELECT FROM_DAYS(TO_DAYS(CURDATE()));
+```
+
+**8. date_add(), date_sub()**
+```sql
+SELECT DATE_ADD(CURDATE(), INTERVAL 1 DAY) AS added_date, 
+       DATE_SUB(CURDATE(), INTERVAL 1 DAY) AS subtracted_date;
+```
+
+---
+
+### **11. SUB-QUERIES**
+
+**1. Insert into deposit a new record (107,Sandeep,Ajne,2000,12032011). Display the customers' names whose branch is same as that of the branch of Sandeep.**
+*Note: MySQL requires dates in `YYYY-MM-DD` format. "Sndeep" is corrected to "Sandeep".*
+```sql
+-- Insert the new record
+INSERT INTO deposit VALUES (107, 'Sandeep', 'AJNE', 2000.00, '2011-03-12');
+
+-- Display customers in the same branch as Sandeep
+SELECT cname FROM deposit WHERE bname IN (SELECT bname FROM deposit WHERE cname = 'Sandeep');
+```
+
+**2. Give the number of customers who are depositors as well as borrowers.**
+```sql
+SELECT COUNT(DISTINCT cname) AS common_customers 
+FROM deposit 
+WHERE cname IN (SELECT cname FROM borrow);
+```
+
+**3. Delete the record from loans who have a deposit.**
+*Note: The table name in your schema is `borrow`, not `loans`. The query below uses `borrow`.*
+```sql
+DELETE FROM borrow 
+WHERE cname IN (SELECT cname FROM deposit);
+```
+
+---
+
+### **12. VIEWS IN DBMS**
+
+**1. Create a view for the table deposit with fields accno, cust name and branch name**
+```sql
+CREATE VIEW deposit_details AS
+SELECT accno, cname, bname 
+FROM deposit;
+```
+
+**2. Create a view that gives information about customer name, deposit amount and living city**
+*Note: This requires joining the `deposit` and `customer` tables on the customer name.*
+```sql
+CREATE VIEW customer_deposit_city AS
+SELECT d.cname, d.amt, c.lcity 
+FROM deposit d
+JOIN customer c ON d.cname = c.cname;
+```
+
+**3. Create a view to display the borrow details having loan no 206**
+```sql
+CREATE VIEW loan_206_details AS
+SELECT * 
+FROM borrow 
+WHERE loan_no = 206;
+```
+
+**4. Drop a view**
+```sql
+-- Example: Dropping the first view created
+DROP VIEW deposit_details; 
+```

@@ -1,0 +1,61 @@
+mysql> SELECT LOWER(cname) FROM deposit;
++--------------+
+| LOWER(cname) |
++--------------+
+| anil         |
+| sunil        |
+| mehul        |
+| pramod       |
+| sandeep      |
+| naren        |
++--------------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT UPPER(cname) FROM deposit;
++--------------+
+| UPPER(cname) |
++--------------+
+| ANIL         |
+| SUNIL        |
+| MEHUL        |
+| PRAMOD       |
+| SANDEEP      |
+| NAREN        |
++--------------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT cname, LENGTH(cname) FROM deposit;
++---------+---------------+
+| cname   | LENGTH(cname) |
++---------+---------------+
+| Anil    |             4 |
+| Sunil   |             5 |
+| Mehul   |             5 |
+| Pramod  |             6 |
+| Sandeep |             7 |
+| Naren   |             5 |
++---------+---------------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT BIT_LENGTH('example_string');
++------------------------------+
+| BIT_LENGTH('example_string') |
++------------------------------+
+|                          112 |
++------------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT CONCAT(cname, ' - ', bname) AS customer_branch FROM deposit;
++--------------------+
+| customer_branch    |
++--------------------+
+| Anil - VRC         |
+| Sunil - JNE        |
+| Mehul - Karol Bagh |
+| Pramod - MG Road   |
+| Sandeep - Andheri  |
+| Naren - Andheri    |
++--------------------+
+6 rows in set (0.00 sec)
+
+mysql> notee;

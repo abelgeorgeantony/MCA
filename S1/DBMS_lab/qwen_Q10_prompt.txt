@@ -1,0 +1,90 @@
+Current data:
+
+mysql> select * from borrow;
++---------+---------+-------------+---------+
+| loan_no | cname   | bname       | amt     |
++---------+---------+-------------+---------+
+|     201 | Anil    | VRC         | 1000.00 |
+|     206 | Mehul   | AJNE        | 5000.00 |
+|     311 | Sunil   | ANDHERI     | 3000.00 |
+|     321 | Madhuri | NEHRU PLACE | 2000.00 |
++---------+---------+-------------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select * from branch;
++------------+----------+
+| bname      | bcity    |
++------------+----------+
+| VRC        | Nagpur   |
+| JNE        | Nagpur   |
+| KAROL BAGH | Delhi    |
+| CHANDINI   | Delhi    |
+| MG ROAD    | Banglore |
+| ANDHERI    | Bombay   |
++------------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select * from customer;
++---------+----------+
+| cname   | lcity    |
++---------+----------+
+| Anil    | Calcutta |
+| Sunil   | Delhi    |
+| Mehul   | Baroda   |
+| Madhuri | Nagpur   |
+| Pramod  | Nagpur   |
+| Shivani | Bombay   |
+| Naren   | Bombay   |
++---------+----------+
+7 rows in set (0.00 sec)
+
+mysql> select * from deposit;
++-------+---------+------------+----------+------------+
+| accno | cname   | bname      | amt      | ddate      |
++-------+---------+------------+----------+------------+
+|  1001 | Anil    | VRC        | 20000.00 | 2014-03-01 |
+|  1002 | Sunil   | JNE        | 57500.00 | 2015-01-04 |
+|  1003 | Mehul   | Karol Bagh | 40250.00 | 2014-11-17 |
+|  1006 | Pramod  | MG Road    | 37950.00 | 2015-03-27 |
+|  1007 | Sandeep | Andheri    | 25300.00 | 2015-03-31 |
+|  1008 | Naren   | Andheri    | 37950.00 | 2014-02-12 |
++-------+---------+------------+----------+------------+
+6 rows in set (0.00 sec)
+
+
+
+
+QUESTIONS/PROBLEMS BELOW:
+10 FUNCTIONS 
+A. Numeric Functions 
+1. Abs(-5)
+6. Truncate(1.83579,3) 
+7. Mod(31,3)
+10.Round(5)
+
+B. STRING FUNCTIONS 
+1. Display the customer names in deposit table in lower case 
+2. Display customer names in deposit table in uppercase
+3. Display the customer name and length of each name.
+4. Find the length of a string in bits.
+7. Concatenate customer name and branch name from the table deposit
+
+C. Date Functions 
+1. curtime(), curdate() 
+2. year() 
+3. month(), monthname() 
+4.dayofyear(), dayofmonth(), dayofweek() 
+5. hour(), minute(), second() 
+6.to_days() 
+7. from_days() 
+8. date_add(), date_sub()
+
+11. SUB-QUERIES 
+1.Insert into deposit a new record (107,Sandeep,Ajne,2000,12032011).Display the customers' names whose branch is same as that of the branch of Sndeep. 
+2.Give the number of customers who are depositors as well as borrowers. 3.Delete the record from loans who have a deposit.
+
+12. VIEWS IN DBMS 
+1. Create a view for the table deposit with fields accno, cust name and branch name 
+2. Create a view that gives information about customer name, deposit amount and living city 
+3. Create a view to display the borrow details having loan no 206
+4. Drop a view

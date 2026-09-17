@@ -1,8 +1,3 @@
-mysql> SELECT bname, SUM(amt) AS total_deposit
-    -> FROM deposit
-    -> 
-    -> ;
-ERROR 1140 (42000): In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'abel_lab_db.deposit.bname'; this is incompatible with sql_mode=only_full_group_by
 mysql> SELECT bname, SUM(amt) FROM deposit GROUP BY bname;
 +-----------+----------+
 | bname     | SUM(amt) |
@@ -61,5 +56,65 @@ mysql> SELECT cname, MIN(amt) FROM deposit WHERE bname = 'Andheri' GROUP BY cnam
 | Naren   | 37950.00 |
 +---------+----------+
 2 rows in set (0.00 sec)
+
+mysql> notee;
+mysql> SELECT lcity
+    -> FROM customer
+    -> GROUP BY lcity
+    -> HAVING COUNT(*) = (
+    ->     SELECT COUNT(*)
+    ->     FROM customer
+    ->     WHERE lcity = 'Nagpur'
+    -> );
++--------+
+| lcity  |
++--------+
+| Nagpur |
+| Bombay |
++--------+
+2 rows in set (0.01 sec)
+
+mysql> SELECT bname, SUM(amt) AS total_deposit
+    -> FROM deposit
+    -> GROUP BY bname
+    -> HAVING SUM(amt) > 30000;
++-----------+---------------+
+| bname     | total_deposit |
++-----------+---------------+
+| JNE       |      57500.00 |
+| KarolBagh |      40250.00 |
+| MG Road   |      37950.00 |
+| Andheri   |      63250.00 |
++-----------+---------------+
+4 rows in set (0.00 sec)
+
+
+mysql> UPDATE deposit SET bname = "Karol Bagh" WHERE bname = "KarolBagh";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT d.bname, SUM(d.amt) AS total_deposit
+    -> FROM deposit d
+    -> JOIN branch b ON d.bname = b.bname
+    -> WHERE b.bcity = 'Delhi'
+    -> GROUP BY d.bname
+    -> HAVING SUM(d.amt) > 4000;
++------------+---------------+
+| bname      | total_deposit |
++------------+---------------+
+| Karol Bagh |      40250.00 |
++------------+---------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT SUM(amt) AS total_deposit, COUNT(*) AS depositor_count
+    -> FROM deposit d
+    -> JOIN customer c ON d.cname = c.cname
+    -> WHERE c.lcity = 'Nagpur';
++---------------+-----------------+
+| total_deposit | depositor_count |
++---------------+-----------------+
+|      37950.00 |               1 |
++---------------+-----------------+
+1 row in set (0.00 sec)
 
 mysql> notee;
