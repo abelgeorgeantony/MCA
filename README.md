@@ -9,8 +9,12 @@ The repository is structured into directories for each semester, containing the 
 
 ## Command to wget and execute the dev environment setup script(On every login)
 
-> wget -qO- https://raw.githubusercontent.com/abelgeorgeantony/MCA/main/setup_alpine_env.sh | bash
+```bash
+wget -qO- https://raw.githubusercontent.com/abelgeorgeantony/MCA/main/setup_alpine_env.sh | bash
+```
 
 ## Command to enter the proot in each terminal tab
 
-> alpine-proot
+```bash
+alpine-proot
+```

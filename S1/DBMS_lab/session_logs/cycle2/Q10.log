@@ -1,0 +1,196 @@
+mysql> SELECT * FROM salesman;
++-------------+------------+----------+-----------+
+| salesman_id | name       | city     | commision |
++-------------+------------+----------+-----------+
+|        5001 | James Hoog | New York |      0.15 |
+|        5002 | Nail Knite | Paris    |      0.13 |
+|        5003 | Lauson Hen | San Jose |      0.12 |
+|        5005 | Pit Alex   | London   |      0.11 |
+|        5006 | Mc Lyon    | Paris    |      0.14 |
+|        5007 | Paul Adam  | Rome     |      0.13 |
++-------------+------------+----------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT * FROM customer;
++-------------+----------------+------------+-------+-------------+
+| customer_id | cust_name      | city       | grade | salesman_id |
++-------------+----------------+------------+-------+-------------+
+|        3001 | Brad Guzan     | London     |  NULL |        5005 |
+|        3002 | Nick Rimando   | New York   |   100 |        5001 |
+|        3003 | Jozy Altidor   | Moscow     |   200 |        5007 |
+|        3004 | Fabian Johnson | Paris      |   300 |        5006 |
+|        3005 | Graham Zusi    | California |   200 |        5002 |
+|        3007 | Brad Davis     | New York   |   200 |        5001 |
+|        3008 | Julian Green   | London     |   300 |        5002 |
+|        3009 | Geoff Cameron  | Berlin     |   100 |        5003 |
++-------------+----------------+------------+-------+-------------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT * FROM orders;
++--------+-----------+------------+-------------+-------------+
+| ord_no | purch_amt | ord_date   | customer_id | salesman_id |
++--------+-----------+------------+-------------+-------------+
+|  70001 |    150.50 | 2012-10-05 |        3005 |        5002 |
+|  70002 |     65.26 | 2012-10-05 |        3002 |        5001 |
+|  70003 |   2480.40 | 2012-10-10 |        3009 |        5003 |
+|  70004 |    110.50 | 2012-08-17 |        3009 |        5003 |
+|  70005 |   2400.60 | 2012-07-27 |        3007 |        5001 |
+|  70007 |    948.50 | 2012-09-10 |        3005 |        5002 |
+|  70008 |   5760.00 | 2012-09-10 |        3002 |        5001 |
+|  70009 |    270.65 | 2012-09-10 |        3001 |        5005 |
+|  70010 |   1983.43 | 2012-10-10 |        3004 |        5006 |
+|  70011 |     75.29 | 2012-08-17 |        3003 |        5007 |
+|  70012 |    250.45 | 2012-06-27 |        3008 |        5002 |
+|  70013 |   3045.60 | 2012-04-25 |        3002 |        5001 |
++--------+-----------+------------+-------------+-------------+
+12 rows in set (0.00 sec)
+
+mysql> -- QUESTIONS START BELOW --
+mysql> SELECT 
+    ->     s.name AS Salesman_Name, 
+    ->     c.cust_name AS Customer_Name, 
+    ->     s.city
+    -> FROM 
+    ->     salesman s
+    -> JOIN 
+    ->     customer c ON s.city = c.city;
++---------------+----------------+----------+
+| Salesman_Name | Customer_Name  | city     |
++---------------+----------------+----------+
+| Pit Alex      | Brad Guzan     | London   |
+| James Hoog    | Nick Rimando   | New York |
+| Mc Lyon       | Fabian Johnson | Paris    |
+| Nail Knite    | Fabian Johnson | Paris    |
+| James Hoog    | Brad Davis     | New York |
+| Pit Alex      | Julian Green   | London   |
++---------------+----------------+----------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT 
+    ->     c.cust_name, 
+    ->     o.ord_no, 
+    ->     o.purch_amt, 
+    ->     c.city
+    -> FROM 
+    ->     customer c
+    -> JOIN 
+    ->     orders o ON c.customer_id = o.customer_id
+    -> WHERE 
+    ->     o.purch_amt BETWEEN 100 AND 1000;
++---------------+--------+-----------+------------+
+| cust_name     | ord_no | purch_amt | city       |
++---------------+--------+-----------+------------+
+| Graham Zusi   |  70001 |    150.50 | California |
+| Geoff Cameron |  70004 |    110.50 | Berlin     |
+| Graham Zusi   |  70007 |    948.50 | California |
+| Brad Guzan    |  70009 |    270.65 | London     |
+| Julian Green  |  70012 |    250.45 | London     |
++---------------+--------+-----------+------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT 
+    ->     s.name AS Salesman_Name, 
+    ->     c.cust_name AS Customer_Name
+    -> FROM 
+    ->     salesman s
+    -> CROSS JOIN 
+    ->     customer c;
++---------------+----------------+
+| Salesman_Name | Customer_Name  |
++---------------+----------------+
+| Paul Adam     | Brad Guzan     |
+| Mc Lyon       | Brad Guzan     |
+| Pit Alex      | Brad Guzan     |
+| Lauson Hen    | Brad Guzan     |
+| Nail Knite    | Brad Guzan     |
+| James Hoog    | Brad Guzan     |
+| Paul Adam     | Nick Rimando   |
+| Mc Lyon       | Nick Rimando   |
+| Pit Alex      | Nick Rimando   |
+| Lauson Hen    | Nick Rimando   |
+| Nail Knite    | Nick Rimando   |
+| James Hoog    | Nick Rimando   |
+| Paul Adam     | Jozy Altidor   |
+| Mc Lyon       | Jozy Altidor   |
+| Pit Alex      | Jozy Altidor   |
+| Lauson Hen    | Jozy Altidor   |
+| Nail Knite    | Jozy Altidor   |
+| James Hoog    | Jozy Altidor   |
+| Paul Adam     | Fabian Johnson |
+| Mc Lyon       | Fabian Johnson |
+| Pit Alex      | Fabian Johnson |
+| Lauson Hen    | Fabian Johnson |
+| Nail Knite    | Fabian Johnson |
+| James Hoog    | Fabian Johnson |
+| Paul Adam     | Graham Zusi    |
+| Mc Lyon       | Graham Zusi    |
+| Pit Alex      | Graham Zusi    |
+| Lauson Hen    | Graham Zusi    |
+| Nail Knite    | Graham Zusi    |
+| James Hoog    | Graham Zusi    |
+| Paul Adam     | Brad Davis     |
+| Mc Lyon       | Brad Davis     |
+| Pit Alex      | Brad Davis     |
+| Lauson Hen    | Brad Davis     |
+| Nail Knite    | Brad Davis     |
+| James Hoog    | Brad Davis     |
+| Paul Adam     | Julian Green   |
+| Mc Lyon       | Julian Green   |
+| Pit Alex      | Julian Green   |
+| Lauson Hen    | Julian Green   |
+| Nail Knite    | Julian Green   |
+| James Hoog    | Julian Green   |
+| Paul Adam     | Geoff Cameron  |
+| Mc Lyon       | Geoff Cameron  |
+| Pit Alex      | Geoff Cameron  |
+| Lauson Hen    | Geoff Cameron  |
+| Nail Knite    | Geoff Cameron  |
+| James Hoog    | Geoff Cameron  |
++---------------+----------------+
+48 rows in set (0.00 sec)
+
+mysql> SELECT 
+    ->     s.name AS Salesman_Name, 
+    ->     c.cust_name AS Customer_Name, 
+    ->     s.city AS Salesman_City, 
+    ->     c.city AS Customer_City
+    -> FROM 
+    ->     customer c
+    -> INNER JOIN 
+    ->     salesman s ON c.salesman_id = s.salesman_id;
++---------------+----------------+---------------+---------------+
+| Salesman_Name | Customer_Name  | Salesman_City | Customer_City |
++---------------+----------------+---------------+---------------+
+| James Hoog    | Nick Rimando   | New York      | New York      |
+| James Hoog    | Brad Davis     | New York      | New York      |
+| Nail Knite    | Graham Zusi    | Paris         | California    |
+| Nail Knite    | Julian Green   | Paris         | London        |
+| Lauson Hen    | Geoff Cameron  | San Jose      | Berlin        |
+| Pit Alex      | Brad Guzan     | London        | London        |
+| Mc Lyon       | Fabian Johnson | Paris         | Paris         |
+| Paul Adam     | Jozy Altidor   | Rome          | Moscow        |
++---------------+----------------+---------------+---------------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT 
+    ->     c.cust_name, 
+    ->     c.grade, 
+    ->     s.name AS Salesman_Name
+    -> FROM 
+    ->     customer c
+    -> LEFT JOIN 
+    ->     salesman s ON c.salesman_id = s.salesman_id
+    -> WHERE 
+    ->     c.grade < 200
+    -> ORDER BY 
+    ->     c.cust_name;
++---------------+-------+---------------+
+| cust_name     | grade | Salesman_Name |
++---------------+-------+---------------+
+| Geoff Cameron |   100 | Lauson Hen    |
+| Nick Rimando  |   100 | James Hoog    |
++---------------+-------+---------------+
+2 rows in set (0.00 sec)
+
+mysql> -- QUESTION f REMAINS TO BE DONE --
+mysql> notee;
