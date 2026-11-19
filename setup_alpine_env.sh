@@ -18,7 +18,7 @@ ALPINE_BRANCH="v3.23"
 ESSENTIAL_PKGS="bash gdb git curl neovim nano openssh-client ca-certificates less tmux tree musl-locales"
 
 # Developer bloat (output hidden, installed in background)
-BLOAT_PKGS="htop strace ltrace ripgrep fd bat jq fzf eza python3 py3-pip build-base cmake nodejs npm zsh"
+BLOAT_PKGS="htop strace ltrace ripgrep fd bat jq fzf eza python3 py3-pip build-base cmake nodejs npm zsh astyle"
 # ─────────────────────────────────────
 
 DEV_DIR="$HOME/.local_env"
@@ -91,9 +91,31 @@ LAUNCHER
     fi
 }
 
+# Sync configs from repo
+sync_configs() {
+    local target_dir="$ROOTFS_DIR/root"
+    mkdir -p "$target_dir"
+
+    # URL to your config file in the repo
+    local astyle_url="https://raw.githubusercontent.com/abelgeorgeantony/MCA/main/configs/.astylerc"
+    
+    say "Fetching .astylerc from repo..."
+    # Use '|| true' to prevent script crash (due to set -e) if the file isn't in the repo yet
+    fetch "$astyle_url" "$target_dir/.astylerc.part" || true
+    
+    if [ -s "$target_dir/.astylerc.part" ]; then
+        mv "$target_dir/.astylerc.part" "$target_dir/.astylerc"
+        say ".astylerc synced successfully."
+    else
+        rm -f "$target_dir/.astylerc.part"
+        say "Warning: .astylerc not found or empty in repo. Skipping."
+    fi
+}
+
 # ─────────── already built? ───────────
 if [ -f "$STAMP" ]; then
     install_launcher
+    sync_configs
     echo "Dev environment already present."
     say "Enter it with:  $BIN_DIR/$CMD_NAME   (or just '$CMD_NAME' in a new tab)"
     say "(Delete $STAMP to force a rebuild if you updated package lists)"
@@ -201,6 +223,8 @@ if command -v fzf >/dev/null 2>&1; then
     source /usr/share/fzf/completion.bash 2>/dev/null || true
 fi
 GUESTRC
+
+sync_configs
 
 # ─────────── 5. done ───────────
 touch "$STAMP"
