@@ -1,0 +1,159 @@
+mysql> CREATE DATABASE BankDB;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> USE BankDB;
+Database changed
+mysql> -- Branch Table 
+mysql> CREATE TABLE Branch( branch_id INT PRIMARY KEY, branch_name VARCHAR(50) NOT NULL, city VARCHAR(50) NOT NULL, ifsc_code VARCHAR(15) UNIQUE );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO Branch (branch_id, branch_name, city, ifsc_code) VALUES
+    -> (1, "Aluva Branch", "Aluva", "UCBL0001"),
+    -> (2, "Kochi Branch", "Kochi", "UCBL0002"),
+    -> (3, "Thrissur Branch", "Thrissur", "UCBL0003");
+Query OK, 3 rows affected (0.02 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Branch;
++-----------+-----------------+----------+-----------+
+| branch_id | branch_name     | city     | ifsc_code |
++-----------+-----------------+----------+-----------+
+|         1 | Aluva Branch    | Aluva    | UCBL0001  |
+|         2 | Kochi Branch    | Kochi    | UCBL0002  |
+|         3 | Thrissur Branch | Thrissur | UCBL0003  |
++-----------+-----------------+----------+-----------+
+3 rows in set (0.00 sec)
+
+
+mysql> -- Customer Table
+mysql> CREATE TABLE Customer( customer_id INT PRIMARY KEY, customer_name VARCHAR(50) NOT NULL, dob DATE, phone VARCHAR(15), email VARCHAR(100) UNIQUE, address VARCHAR(150));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO Customer(customer_id, customer_name, dob, phone, email, address) VALUES
+    -> (101, "Arun K", "2002-05-14", "9895012345", "arun@gmail.com", "Aluva"),
+    -> (102, "Binu M", "2001-11-03", "9876543210", "binu@gmail.com", "Kochi");
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Customer;
++-------------+---------------+------------+------------+----------------+---------+
+| customer_id | customer_name | dob        | phone      | email          | address |
++-------------+---------------+------------+------------+----------------+---------+
+|         101 | Arun K        | 2002-05-14 | 9895012345 | arun@gmail.com | Aluva   |
+|         102 | Binu M        | 2001-11-03 | 9876543210 | binu@gmail.com | Kochi   |
++-------------+---------------+------------+------------+----------------+---------+
+2 rows in set (0.00 sec)
+
+mysql> -- Accounts table
+mysql> CREATE TABLE Account( account_id BIGINT PRIMARY KEY, customer_id INT NOT NULL, branch_id INT NOT NULL, account_type VARCHAR(20) NOT NULL, balance DECIMAL(12,2) DEFAULT 0.00, opening_date DATE, FOREIGN KEY(customer_id) REFERENCES Customer(customer_id), FOREIGN KEY(branch_id) REFERENCES Branch(branch_id));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> INSERT INTO Account (account_id, customer_id, branch_id, account_type, balance, opening_date) VALUES
+    -> (1001, 101, 1, "Savings", 15000.00, "2024-01-10"),
+    -> (1002, 102, 2, "Current", 25000.00, "2024-02-15");
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Account;
++------------+-------------+-----------+--------------+----------+--------------+
+| account_id | customer_id | branch_id | account_type | balance  | opening_date |
++------------+-------------+-----------+--------------+----------+--------------+
+|       1001 |         101 |         1 | Savings      | 15000.00 | 2024-01-10   |
+|       1002 |         102 |         2 | Current      | 25000.00 | 2024-02-15   |
++------------+-------------+-----------+--------------+----------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> -- Transaction Table
+mysql> CREATE TABLE Transaction (
+    ->     transaction_id INT PRIMARY KEY,
+    ->     account_no BIGINT NOT NULL,
+    ->     transaction_type VARCHAR(20) NOT NULL,
+    ->     amount DECIMAL(12,2) NOT NULL,
+    ->     transaction_date DATETIME NOT NULL,
+    ->     description VARCHAR(150),
+    ->     FOREIGN KEY (account_no)
+    ->     REFERENCES Account(account_id)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO Transaction
+    -> (transaction_id, account_no, transaction_type, amount, transaction_date, description)
+    -> VALUES
+    -> (1, 1001, 'Deposit', 5000.00, '2024-01-10 15:15:00', 'Initial Deposit'),
+    -> (2, 1001, 'Withdrawal', 2000.00, '2024-01-15 14:30:00', 'ATM Withdrawal'),
+    -> (3, 1002, 'Deposit', 10000.00, '2024-02-05 09:00:00', 'Salary Credit');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Transaction;
++----------------+------------+------------------+----------+---------------------+-----------------+
+| transaction_id | account_no | transaction_type | amount   | transaction_date    | description     |
++----------------+------------+------------------+----------+---------------------+-----------------+
+|              1 |       1001 | Deposit          |  5000.00 | 2024-01-10 15:15:00 | Initial Deposit |
+|              2 |       1001 | Withdrawal       |  2000.00 | 2024-01-15 14:30:00 | ATM Withdrawal  |
+|              3 |       1002 | Deposit          | 10000.00 | 2024-02-05 09:00:00 | Salary Credit   |
++----------------+------------+------------------+----------+---------------------+-----------------+
+3 rows in set (0.00 sec)
+
+mysql> -- Loan Table
+mysql> CREATE TABLE Loan (
+    ->     loan_id INT PRIMARY KEY,
+    ->     customer_id INT NOT NULL,
+    ->     branch_id INT NOT NULL,
+    ->     loan_type VARCHAR(30) NOT NULL,
+    ->     loan_amount DECIMAL(12,2) NOT NULL,
+    ->     interest_rate DECIMAL(5,2) NOT NULL,
+    ->     loan_date DATE NOT NULL,
+    ->     FOREIGN KEY (customer_id) REFERENCES Customer(customer_id),
+    ->     FOREIGN KEY (branch_id) REFERENCES Branch(branch_id)
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> INSERT INTO Loan
+    -> (loan_id, customer_id, branch_id, loan_type, loan_amount, interest_rate, loan_date)
+    -> VALUES
+    -> (201, 101, 1, 'Home Loan', 2000000.00, 8.50, '2024-03-01'),
+    -> (202, 102, 2, 'Car Loan', 750000.00, 9.00, '2024-03-15');
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Loan;
++---------+-------------+-----------+-----------+-------------+---------------+------------+
+| loan_id | customer_id | branch_id | loan_type | loan_amount | interest_rate | loan_date  |
++---------+-------------+-----------+-----------+-------------+---------------+------------+
+|     201 |         101 |         1 | Home Loan |  2000000.00 |          8.50 | 2024-03-01 |
+|     202 |         102 |         2 | Car Loan  |   750000.00 |          9.00 | 2024-03-15 |
++---------+-------------+-----------+-----------+-------------+---------------+------------+
+2 rows in set (0.00 sec)
+
+mysql> -- Loan Payment Table
+mysql> CREATE TABLE Loan_Payment (
+    ->     payment_id INT PRIMARY KEY,
+    ->     loan_id INT NOT NULL,
+    ->     payment_amount DECIMAL(12,2) NOT NULL,
+    ->     payment_date DATE NOT NULL,
+    ->     payment_mode VARCHAR(20) NOT NULL,
+    ->     FOREIGN KEY (loan_id) REFERENCES Loan(loan_id)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO Loan_Payment
+    -> (payment_id, loan_id, payment_amount, payment_date, payment_mode)
+    -> VALUES
+    -> (1, 201, 25000.00, '2024-01-01', 'Online'),
+    -> (2, 201, 25000.00, '2024-05-01', 'Online'),
+    -> (3, 202, 15000.00, '2024-04-10', 'Cash');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Loan_Payment;
++------------+---------+----------------+--------------+--------------+
+| payment_id | loan_id | payment_amount | payment_date | payment_mode |
++------------+---------+----------------+--------------+--------------+
+|          1 |     201 |       25000.00 | 2024-01-01   | Online       |
+|          2 |     201 |       25000.00 | 2024-05-01   | Online       |
+|          3 |     202 |       15000.00 | 2024-04-10   | Cash         |
++------------+---------+----------------+--------------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> notee;

@@ -1,0 +1,51 @@
+mysql> -- ALTER operations
+
+mysql> ALTER TABLE Account ADD account_status VARCHAR(10) DEFAULT "Active";
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE Transaction MODIFY transaction_type VARCHAR(30);
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE Customer DROP COLUMN phone;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> -- UPDATE operation
+mysql> UPDATE Account SET balance = balance + 5000.00 WHERE account_id = 1001;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> -- DELETE operation
+mysql> DELETE FROM Loan WHERE loan_id = 202;
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`BankDB`.`Loan_Payment`, CONSTRAINT `Loan_Payment_ibfk_1` FOREIGN KEY (`loan_id`) REFERENCES `Loan` (`loan_id`))
+mysql> 
+mysql> -- SELECT operation
+mysql> SELECT customer_id, customer_name, email FROM Customer;
++-------------+---------------+----------------+
+| customer_id | customer_name | email          |
++-------------+---------------+----------------+
+|         101 | Arun K        | arun@gmail.com |
+|         102 | Binu M        | binu@gmail.com |
++-------------+---------------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> -- WHERE clause
+mysql> SELECT account_id, customer_id, balance FROM Account WHERE balance > 20000;
++------------+-------------+----------+
+| account_id | customer_id | balance  |
++------------+-------------+----------+
+|       1002 |         102 | 25000.00 |
++------------+-------------+----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT loan_id, loan_type, loan_amount FROM Loan WHERE customer_id = 101;
++---------+-----------+-------------+
+| loan_id | loan_type | loan_amount |
++---------+-----------+-------------+
+|     201 | Home Loan |  2000000.00 |
++---------+-----------+-------------+
+1 row in set (0.00 sec)
+
+mysql> notee;
